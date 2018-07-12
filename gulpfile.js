@@ -22,7 +22,6 @@ gulp.task('styles', function() {
   return sass('src/css/**/*.scss', {style: 'expanded'})  // 传入 sass 目录及子目录下的所有 .scss 文件生成文件流通过管道并设置输出格式
     .pipe(cached('styles'))  // 缓存传入文件，只让已修改的文件通过管道（第一次执行是全部通过，因为还没有记录缓存）
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4')) // 添加 CSS 浏览器前缀，兼容最新的2个版本
-    // .pipe(gulp.dest('dist/css')) // 输出到 dist/css 目录下（不影响此时管道里的文件流）
     .pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
     .pipe(gulp.dest('dist/css'))
@@ -43,7 +42,6 @@ gulp.task('scripts', function() {
     // .pipe(jshint('.jshintrc'))
     // .pipe(jshint.reporter('default'))
     // .pipe(concat('main.js'))
-    // .pipe(gulp.dest('dist/js'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'))
@@ -62,9 +60,6 @@ gulp.task('images', function() {
 gulp.task('html', function () {
   gulp.src('src/lib/**/*')
       .pipe(cached('lib')).pipe(gulp.dest('dist/lib'));
-
-  gulp.src('src/gif.worker.js')
-      .pipe(cached('lib')).pipe(gulp.dest('dist'));
 
   // gulp.src('src/fonts/**/*')
   //     .pipe(cached('font'))
@@ -103,7 +98,7 @@ gulp.task('watch', function() {
   // 监控 js 文件，有变动则执行 script 任务
   gulp.watch('src/js/**/*.js', ['scripts']);
   // 监控图片文件，有变动则执行 image 任务
-  gulp.watch('src/img/**/*', ['images']);
+  gulp.watch('src/static/images/**/*', ['images']);
   // 监控 html 文件，有变动则执行 html 任务
   gulp.watch('src/**/*.html', ['html']);
   // 监控 dist 目录下除 css 目录以外的变动（如js，图片等），则自动刷新页面
